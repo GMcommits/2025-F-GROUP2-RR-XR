@@ -35,6 +35,9 @@ jobs:
     needs: lint
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        
       - name: Install Pytest 
         run: pip install pytest 
     
@@ -46,6 +49,9 @@ jobs:
     needs: test 
 
     steps: 
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        
       - name: Install Coverage
         run: pip install pytest pytest-cov
 
