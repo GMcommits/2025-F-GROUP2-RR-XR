@@ -40,10 +40,10 @@ jobs:
       - name: Test Results
         id: testRes
         run:  |
-          if [ "${{ steps.runTest.outcome }}" = "success" ]; then
-            echo "pass" >> $GITHUB_OUTPUT
+          if [ "${{ steps.runTest.outcome }}" == "success" ]; then
+            echo "result=pass" >> $GITHUB_OUTPUT
           else 
-            echo "fail" >> $GITHUB_OUTPUT 
+            echo "result=fail" >> $GITHUB_OUTPUT 
           fi
 
       - name: Comment on Pr
