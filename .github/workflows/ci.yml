@@ -46,24 +46,7 @@ jobs:
         run: pip install pytest 
     
       - name: Run Tests with Pytest
-        run: pytest 
-
-  coverage:
-    runs-on: ubuntu-latest
-    needs: test 
-    defaults:
-      run:
-        working-directory: ci_lab  # Set the default working directory for all steps
-
-
-    steps: 
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        
-      - name: Install Coverage
-        run: pip install pytest pytest-cov
-
-      - name: Run Coverage
         run: pytest --cov=src --cov-report=term-missing
-  
+
+
     
