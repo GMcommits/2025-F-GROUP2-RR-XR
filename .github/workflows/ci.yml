@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest  # Use the latest Ubuntu runner
@@ -25,6 +28,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run Tests with Pytest
+        id: runTest
         run: pytest --cov=src --cov-report=term-missing
 
       - name: Install Flake8
@@ -32,3 +36,19 @@ jobs:
 
       - name: Run Flake8 Linting
         run: flake8 src --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Test Results
+        id: testRes
+        run:  |
+          if ["{{ steps.runTest.outcome}}" == "success"]; then
+            echo "pass" >> $GITHUB_OUTPUT
+          else 
+            echo "fail" >> $GITHUB_OUTPUT 
+          fi
+
+      - name: Comment on Pr
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: ${{ steps.testRes.outputs.result }}
